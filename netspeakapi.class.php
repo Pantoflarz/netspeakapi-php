@@ -6,7 +6,7 @@
  *   last modified        : 01 August 2020
  *   version              : 0.1.0
  *   website              : https://net-speak.pl/api_client/test/api.php
- *   copyright            : (C) 2018 Adam Szczygiel
+ *   copyright            : (C) 2020 Adam Szczygiel
  *  
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
