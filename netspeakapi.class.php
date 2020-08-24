@@ -3,8 +3,8 @@
  *                         netspeakapi.class.php
  *                         ------------------                    
  *   created              : 29 July 2020
- *   last modified        : 01 August 2020
- *   version              : 0.1.0
+ *   last modified        : 24 August 2020
+ *   version              : 1.0.0
  *   website              : https://net-speak.pl/api_client/test/api.php
  *   copyright            : (C) 2020 Adam Szczygiel
  *  
@@ -23,25 +23,109 @@
  */
  
 class netspeakapi{
-	
+
+    //private runtime variables
 	private $configuration = array('base_url' => "https://net-speak.pl/api_client/", 'api_key' => '', 'teamspeak_api_key' => '');
 
 	function __construct(){
 		
 	}
 
+    /**
+     * setAPIKey
+     *
+     *	Sets a new API Key for the class instance.
+     *  API Key is obtainable from http://www.net-speak.pl/loged/panel/clientarea/set.php?cmd=api
+     *
+     * <b>Output:</b>
+     * <pre>
+     *
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param		string	$api_key		api_key
+     */
 	function setAPIKey($api_key){
 		$this->configuration['api_key'] = $api_key;
 	}
-	
+
+    /**
+     * setTeamSpeakAPIKey
+     *
+     *	Sets a new TeamSpeak API Key for the class instance.
+     *  API Key is obtainable from http://www.net-speak.pl/loged/panel/clientarea/set.php?cmd=api_ts3
+     *
+     * <b>Output:</b>
+     * <pre>
+     *
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param		string	$teamspeak_api_key		api_key
+     */
 	function setTeamSpeakAPIKey($teamspeak_api_key){
 		$this->configuration['teamspeak_api_key'] = $teamspeak_api_key;
 	}
-	
+
+    /**
+     * accountInfo
+     *
+     *	Grabs information about customer account.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [account_income] => 100.10
+     *       [account_outcome] => 75.50
+     *       [account_id] => 12345
+     *       [account_income_url] => https://net-speak.pl/portfel_add.php?portfel_id=12345
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @return object accountInfo
+     */
 	function accountInfo(){
 		return $this->decodeResponse($this->send("account_info"));
 	}
-	
+
+    /**
+     * accountIncomeCheck
+     *
+     *	Grabs a list of payments made into the customer account.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+        [response] => stdClass Object(
+            [result] => success
+            [data] => Array(
+                [0] => Array(
+                    [pay_data] => 2020-04-30
+                    [hour] => 14:34
+                    [amount] => 118.22
+                    [description] => test@gmail.com (Opłaty PayPal 2.78 zł)
+                )
+
+                [1] => Array(
+                    [pay_data] => 2019-10-24
+                    [hour] => 18:57
+                    [amount] => 58.62
+                    [description] => test@gmail.com (Opłaty PayPal 1.38 zł)
+                )
+            )
+        )
+    )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param		string	$searchingFor		What we are looking for in the details of a given payee (e.g. filter by email address).
+     * @param       integer $numberOfResults    The number of results to display.
+     * @return object accountIncomeCheck
+     */
 	function accountIncomeCheck($searchingFor, $numberOfResults){
 		
 		if(!is_numeric($numberOfResults)){ return $this->returnErrorMessage("error", "numberOfResults must be a number."); }
@@ -49,18 +133,51 @@ class netspeakapi{
 		$data = $this->decodeResponse($this->send("income_check", array("income_data" => $searchingFor, "result_number" => $numberOfResults)));
 		
 		if($data->response->result == "success"){
-			$data->response->data = unserialize(base64_decode($data->data));
+			$data->response->data = unserialize(base64_decode($data->response->data));
 		}
 		
 		return $data;
 		
 	}
-	
+
+    /**
+     * accountServiceList
+     *
+     *	Grabs a list of services connected to user account.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+        [response] => stdClass Object(
+            [result] => success
+            [data] => Array(
+                [0] => Array(
+                    [service_type] => TeamSpeak
+                    [service_id] => ts7-125
+                    [service_endtime] => 29-08-2020 14:41
+                    [service_status] => Online
+                )
+
+                [1] => Array(
+                    [service_type] => VoiceVPS
+                    [service_id] => 3711
+                    [service_endtime] => 31-10-2020 12:56
+                    [service_status] => Online
+                )
+            )
+        )
+    )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @return object accountServiceList
+     */
 	function accountServiceList(){
 		$data = $this->decodeResponse($this->send("service_list"));
 		
 		if($data->response->result == "success"){
 			$data->response->data = unserialize(base64_decode($data->response->service_array));
+            unset($data->response->service_array);
 		}
 		
 		return $data;
