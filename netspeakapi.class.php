@@ -100,25 +100,25 @@ class netspeakapi{
      * <b>Output:</b>
      * <pre>
      * stdClass Object(
-        [response] => stdClass Object(
-            [result] => success
-            [data] => Array(
-                [0] => Array(
-                    [pay_data] => 2020-04-30
-                    [hour] => 14:34
-                    [amount] => 118.22
-                    [description] => test@gmail.com (Opłaty PayPal 2.78 zł)
-                )
-
-                [1] => Array(
-                    [pay_data] => 2019-10-24
-                    [hour] => 18:57
-                    [amount] => 58.62
-                    [description] => test@gmail.com (Opłaty PayPal 1.38 zł)
-                )
-            )
-        )
-    )
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [data] => Array(
+     *           [0] => Array(
+     *               [pay_data] => 2020-04-30
+     *               [hour] => 14:34
+     *               [amount] => 118.22
+     *               [description] => test@gmail.com (Opłaty PayPal 2.78 zł)
+     *           )
+     *
+     *           [1] => Array(
+     *               [pay_data] => 2019-10-24
+     *               [hour] => 18:57
+     *               [amount] => 58.62
+     *               [description] => test@gmail.com (Opłaty PayPal 1.38 zł)
+     *           )
+     *       )
+     *   )
+     * )
      * </pre>
      *
      * @author     Adam Szczygiel
@@ -148,25 +148,25 @@ class netspeakapi{
      * <b>Output:</b>
      * <pre>
      * stdClass Object(
-        [response] => stdClass Object(
-            [result] => success
-            [data] => Array(
-                [0] => Array(
-                    [service_type] => TeamSpeak
-                    [service_id] => ts7-125
-                    [service_endtime] => 29-08-2020 14:41
-                    [service_status] => Online
-                )
-
-                [1] => Array(
-                    [service_type] => VoiceVPS
-                    [service_id] => 3711
-                    [service_endtime] => 31-10-2020 12:56
-                    [service_status] => Online
-                )
-            )
-        )
-    )
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [data] => Array(
+     *           [0] => Array(
+     *               [service_type] => TeamSpeak
+     *               [service_id] => ts7-125
+     *               [service_endtime] => 29-08-2020 14:41
+     *               [service_status] => Online
+     *           )
+     *
+     *           [1] => Array(
+     *               [service_type] => VoiceVPS
+     *               [service_id] => 3711
+     *               [service_endtime] => 31-10-2020 12:56
+     *               [service_status] => Online
+     *           )
+     *       )
+     *   )
+     * )
      * </pre>
      *
      * @author     Adam Szczygiel
