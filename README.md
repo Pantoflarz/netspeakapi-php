@@ -28,7 +28,7 @@ $test = new netspeakapi();
 
 As aforementioned, the class can handle all of the API's offered by net-speak.pl. HOWEVER, net-speak.pl's API uses two different API keys.<br/><br/>
 
-1 key is for the SHOP and Customer Account API (a key is available from http://www.net-speak.pl/loged/panel/clientarea/set.php?cmd=api after you login)<br/><br/>
+1 key is for the Shop and Customer Account API (a key is available from http://www.net-speak.pl/loged/panel/clientarea/set.php?cmd=api after you login)<br/><br/>
 The other key is for interacting with TeamSpeak servers sold by slots (a key is available from http://www.net-speak.pl/loged/panel/clientarea/set.php?cmd=api_ts3 once you are logged in and have purchased a slotted server)<br/><br/>
 
 To be able to use the Shop and Customer API's you will need to provide the instance of the class with the appriopriate key, using:
@@ -43,7 +43,7 @@ To use the TeamSpeak server endpoints, you will need to provide the instance of 
 $test->setTeamSpeakAPIKey("YOUR_KEY");
 ```
 
-Never share these key with anyone, as they give total control over your account and servers.
+Never share these keys with anyone, as they give total control over your account and servers.
 
 ### Polski
 
