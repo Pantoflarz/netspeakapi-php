@@ -777,6 +777,7 @@ class netspeakapi{
 		}
 	}
 
+	//internal functions which will not be commented or explained
 	function send($command, $commandData = null){
 
 		$ch = curl_init();
@@ -800,7 +801,9 @@ class netspeakapi{
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 20);
 		curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		if(PHP_VERSION_ID >= 70100) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        }
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
 		curl_setopt($ch, CURLOPT_HEADER, 0);
