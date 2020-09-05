@@ -729,24 +729,94 @@ class netspeakapi{
 
 	}
 
+    /**
+     * shopPaymentList
+     *
+     *	Grabs a list of payments.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [data] => Array(
+     *           [0] => Array(
+     *               [payment_url] => https://net-speak.pl/api-pay?pay_id=3
+     *               [payment_amount] => 1
+     *               [payment_description] => TEST
+     *               [payment_type] =>
+     *               [payment_status] => waiting
+     *           )
+     *       )
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @return object shopPaymentList
+     */
 	function shopPaymentList(){
 
 		$data = $this->decodeResponse($this->send("payment_list"));
 
 		if($data->response->result == "success" && $data->response->payment_list_array != "no payments"){
-			$data->response->payment_list_array = unserialize(base64_decode($data->response->payment_list_array));
+			$data->response->data = unserialize(base64_decode($data->response->payment_list_array));
+            unset($data->response->payment_list_array);
 		}
 
 		return $data;
 
 	}
 
+    /**
+     * shopPaymentList
+     *
+     *	Grabs a list of payments.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [payment_url] => https://net-speak.pl/api-pay?pay_id=3
+     *       [payment_amount] => 1
+     *       [payment_type] =>
+     *       [payment_status] => waiting
+     *       )
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param string    $payment_description    The description of payment you want to check (e.g. internal ID).
+     * @return object shopGetPaymentStatus
+     */
 	function shopGetPaymentStatus($payment_description){
 
 		return $this->decodeResponse($this->send("status_payment", array('pay_description' => $payment_description)));
 
 	}
 
+    /**
+     * shopCreatePayment
+     *
+     *	Creates a payment.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [pay_url] => https://net-speak.pl/api-pay?pay_id=3
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param float $payment_amount   The amount the user wants to pay.
+     * @param string    $payment_description    The description of payment (it is recommended this is set to a unique ID generated in your systems).
+     * @return object shopCreatePayment
+     */
 	function shopCreatePayment($payment_amount, $payment_description){
 
 		if(!is_numeric($payment_amount)){ return $this->returnErrorMessage("error", "payment_amount must be a number or floating point."); }
@@ -757,18 +827,73 @@ class netspeakapi{
 
 	}
 
+    /**
+     * shopDeletePayment
+     *
+     *	Deletes a payment.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [payment_status] => deleted
+     *       [pay_id] => 3
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param string    $payment_description    The description of payment to be deleted.
+     * @return object shopDeletePayment
+     */
 	function shopDeletePayment($payment_description){
 
 		return $this->decodeResponse($this->send("payment_delete", array('pay_description' => $payment_description)));
 
 	}
 
+    /**
+     * shopMadePayment
+     *
+     *	Sets that a payment has been made. This can be used to trigger the webhook being sent to your site.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * stdClass Object(
+     *   [response] => stdClass Object(
+     *       [result] => success
+     *       [payment_status] => deleted
+     *       [pay_id] => 3
+     *   )
+     * )
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param string    $payment_description    The description of payment.
+     * @param string    $payment_type    The type of payment made.
+     * @return object shopMadePayment
+     */
 	function shopMadePayment($payment_description, $payment_type){
 
 		return $this->decodeResponse($this->send("payment_made", array('pay_description' => $payment_description, 'payment_type' => $payment_type)));
 
 	}
 
+    /**
+     * shopVerifyPaymentInformation
+     *
+     *	This function should only be used in your configured webhook, to check that the data received comes from net-speak and no one else.
+     *
+     * <b>Output:</b>
+     * <pre>
+     * boolean(true)
+     * </pre>
+     *
+     * @author     Adam Szczygiel
+     * @param array    $payment    The payment array e.g. all related $_POST data provided to the webhook
+     * @return object shopVerifyPaymentInformation
+     */
 	function shopVerifyPaymentInformation($payment){
 		if($payment['secret_code'] == $this->configuration['api_key']){
 			return true;
